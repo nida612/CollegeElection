@@ -1,0 +1,122 @@
+{% extends 'college_election/base.html' %}
+{% block content %}
+    <div class="list-group" style="margin: 30px auto;">
+        <div href="#" class="list-group-item list-group-item-action active">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1" style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
+                    {{ election.title }}
+                    <h7>{{ election.voting_start }} - {{ election.voting_end }}</h7>
+                </h5>
+            </div>
+        </div>
+        {% for position, candidates in posCandiMap.items %}
+            <div class="list-group">
+                <div href="#" class="list-group-item list-group-item-primary">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1"
+                            style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
+                            <a href="#{{ position.title|cut:" " }}"
+                               data-toggle="collapse"
+                            >
+                                {{ position.title }} | {{ candidates|length }}
+
+                            </a>
+                            {% if position.election.status == 'Registration Open' %}
+                                <a class="btn active" href="{% url 'register_candidate' position_id=position.id %}"
+                                   style="border: 1px solid green;color:green;">Register</a></h5>
+                            {% endif %}
+
+                    </div>
+                </div>
+
+                <div id='{{ position.title|cut:" " }}' class="list-group collapse">
+                    {% for candidate, res in candidates.items %}
+                        {% if election.status == 'Voting Live' %}
+                            <div class="list-group-item list-group-item-secondary">
+                                <div class="radio">
+                                    <label><input type="radio" name="{{ position.title|cut:" " }}" id="votes"
+                                                  value="{{ candidate.id }}">
+                                        {{ candidate.student.user.name }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% elif election.status == 'Registration Open' %}
+                            <div class="list-group-item list-group-item-secondary">
+                                {{ candidate.student.user.name }}
+                            </div>
+
+                        {% elif election.status == 'Archived' %}
+                            <div class="list-group-item list-group-item-secondary">
+                                <div class="d-flex w-100 justify-content-between">
+                                    {{ candidate.student.user.name }} ({{ res.0 }})
+                                    <h7>
+
+                                        {% if res.1 == 0 %}
+                                            Tie
+                                        {% elif res.1 == 1 %}
+                                            Winner
+                                        {% endif %}
+                                    </h7>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if election.status == 'Voting Live' %}
+        <div class="btn btn-success"
+             style="margin:0 10px;" onclick=printChecked()>Vote Now
+        </div>
+    {% endif %}
+
+    <script type="text/javascript">
+        function printChecked() {
+            let posChoiceMap = {};
+            let posNameTitleMap = {};
+            let positionRadioNames = [];
+            {% for position, candidates in posCandiMap.items %}
+                posChoiceMap['{{ position.title|cut:" "}}'] = '';
+                posNameTitleMap['{{ position.title|cut:" "}}'] = '{{ position.title }}';
+                positionRadioNames.push('{{ position.title|cut:" "}}');
+            {% endfor %}
+
+            for (let i = 0; i < positionRadioNames.length; i++) {
+                let radioName = positionRadioNames[i];
+                let radioGroup = document.getElementsByName(radioName);
+                for (let j = 0; j < radioGroup.length; j++) {
+                    let radio = radioGroup[j];
+                    if (radio.checked) {
+                        posChoiceMap[radioName] = radio.value
+                    }
+                }
+            }
+            let error = false;
+            for (const [posSlug, candidateChoice] of Object.entries(posChoiceMap)) {
+                if (candidateChoice === '') {
+                    alert("Choose candidate for  " + posNameTitleMap[posSlug]);
+                    error = true
+                    break;
+                }
+            }
+            if (!error) {
+                $.post({
+                    url: '/submit_vote/',
+                    data: posChoiceMap,
+                    success: function (data) {
+                        data = JSON.parse(data);
+                        if (data.status === 0) {
+                            alert(data.message)
+                        } else {
+                            alert(data.message);
+                            window.location = '/'
+                        }
+                    }
+                })
+            }
+
+        }
+    </script>
+{% endblock %}

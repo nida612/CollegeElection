@@ -1,0 +1,59 @@
+{% extends 'college_election/base.html' %}
+{% block content %}
+    <div class="list-group" style="margin: 30px auto;">
+        <div href="#" class="list-group-item list-group-item-action active">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1" style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
+                    {{ election.title }}
+                    {% if election.status == 'Registration Open' %}
+                        <a class="btn btn-success" href="{% url 'activate_election' election_id=election.election_id %}"
+                           style="margin:0 10px;">Activate</a>
+
+                    {% elif election.status == 'Voting Live' %}
+                        <a class="btn btn-danger"
+                           href="{% url 'deactivate_election' election_id=election.election_id %}"
+                           style="margin:0 10px;">Deactivate</a>
+                    {% endif %}
+
+
+                    <h7>{{ election.voting_start }} - {{ election.voting_end }}</h7>
+                </h5>
+            </div>
+        </div>
+        {% for position, candidates in posCandiMap.items %}
+            <div class="list-group">
+
+                <a
+                        href="#{{ position.title|cut:" " }}"
+                        data-toggle="collapse"
+                        class="list-group-item list-group-item-primary">
+                    <div class="d-flex w-100 justify-content-between">
+                        {{ position.title }}
+                        <h7>{{ candidates|length }}</h7>
+
+                    </div>
+                </a>
+                <div id='{{ position.title|cut:" " }}' class="list-group collapse">
+                    {% for candidate, res in candidates.items %}
+                        <div class="list-group-item list-group-item-secondary">
+                            <div class="d-flex w-100 justify-content-between">
+                                {{ candidate.student.user.name }}  {% if res %}({{ res.0 }}){% endif %}
+                                <h7>
+
+                                    {% if res.1 == 0 %}
+                                        Tie
+                                    {% elif res.1 == 1 %}
+                                        Winner
+                                    {% endif %}
+                                </h7>
+                            </div>
+
+
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
