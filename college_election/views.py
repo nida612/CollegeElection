@@ -302,6 +302,8 @@ def results(election):
         result = {}
         # update response with winner of each position
         for pos, candis in response.items():
+            if not candis:
+                return {}
             max_votes = max([x[0] for x in candis.values()])
             winner_exists = True if len([x[0] for x in candis.values() if x[0] == max_votes]) == 1 else False
             result[pos] = {}
