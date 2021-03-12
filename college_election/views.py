@@ -300,6 +300,7 @@ def results(election):
                 response[pos][candi] = (candi_vote_count, -1)
 
         result = {}
+
         # update response with winner of each position
         for pos, candis in response.items():
             if not candis:
