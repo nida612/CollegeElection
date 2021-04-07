@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <title>Nida Sucks</title>
+    <title>College Election Portal</title>
+    <style>
+     body
+     {
+         background: url("https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80") no-repeat fixed;
+         background-size: cover;
+     }
+</style>
 </head>
-<body style="height: 100%;background-color: #c5c5ff6e;">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{% url 'index' %}"">Anshu Rocks</a>
+<body style="height: 100%;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'index' %}"">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,11 +28,11 @@
         </ul>
         {% if request.user.is_authenticated %}
             <span class="navbar-text" style="margin-right: 10px;">
-            Hello {{ request.user.name }} bitch!
+            Hello {{ request.user.name }}
           </span>
-            <a class="btn btn-primary bg-dark" href="{% url 'logout' %}">Log Out</a>
+            <a class="btn btn-info" href="{% url 'logout' %}">Log Out</a>
         {% else %}
-            <a class="btn btn-primary">Login</a>
+            <a class="btn btn-info">Login</a>
         {% endif %}
     </div>
 </nav>
@@ -43,7 +50,7 @@
         {% endfor %}
     {% endif %}
     {% block content %}
-        <!-- <h1>Welcome to payroll manager!</h1> -->
+
 
     {% endblock content %}
 </div>

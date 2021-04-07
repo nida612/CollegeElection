@@ -1,7 +1,7 @@
 {% extends 'college_election/base.html' %}
 {% block content %}
     <div class="list-group" style="margin: 30px auto;">
-        <div href="#" class="list-group-item list-group-item-action active">
+        <div href="#" class="list-group-item list-group-item-action active" style="background-color: #41A0B6">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1" style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
                     {{ election.title }}
@@ -26,7 +26,7 @@
                 <a
                         href="#{{ position.title|cut:" " }}"
                         data-toggle="collapse"
-                        class="list-group-item list-group-item-primary">
+                        class="list-group-item list-group-item-info">
                     <div class="d-flex w-100 justify-content-between">
                         {{ position.title }}
                         <h7>{{ candidates|length }}</h7>

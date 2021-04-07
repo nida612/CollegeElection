@@ -1,11 +1,11 @@
 {% extends 'college_election/base.html' %}
 {% block content %}
-
+<br>
 <div class="jumbotron" style="margin-top: 75px;text-align: center;">
-    <h1 class="display-4">Welcome to Narnia</h1>
-    <p class="lead">To continue either login as Staff or Student</p>
+    <h1 class="display-4">Welcome to the<br>College Election Portal</h1>
+    <p class="lead">To continue, either login as Staff or Student</p>
     <hr class="my-4">
-    <a class="btn btn-primary btn-lg" href="{% url 'staff_login' %}" role="button">Staff</a>
-    <a class="btn btn-primary btn-lg" href="{% url 'student_login' %}" role="button">Student</a>
+    <a class="btn btn-info btn-lg" href="{% url 'staff_login' %}" role="button">Staff</a>
+    <a class="btn btn-info btn-lg" href="{% url 'student_login' %}" role="button">Student</a>
   </div>
 {% endblock %}

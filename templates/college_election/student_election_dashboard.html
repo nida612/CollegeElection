@@ -1,7 +1,7 @@
 {% extends 'college_election/base.html' %}
 {% block content %}
     <div class="list-group" style="margin: 30px auto;">
-        <div href="#" class="list-group-item list-group-item-action active">
+        <div href="#" class="list-group-item list-group-item-action active" style="background-color: #41A0B6">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1" style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
                     {{ election.title }}
@@ -11,7 +11,7 @@
         </div>
         {% for position, candidates in posCandiMap.items %}
             <div class="list-group">
-                <div href="#" class="list-group-item list-group-item-primary">
+                <div href="#" class="list-group-item list-group-item-info">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1"
                             style="display: flex;width: 100%;justify-content: space-between;align-items: center;">
