@@ -189,12 +189,15 @@ def student_election_dashboard(request, election_id):
 def register_candidate(request, position_id):
     student = Student.objects.get(user=request.user)
     if request.user and request.user.is_authenticated and student:
-        position = Position.objects.get(id=position_id)
-        if position:
-            if position.election.status == 'Registration Open':
+        pos = Position.objects.get(id=position_id)
+        if Candidate.objects.filter(student=student, position__election__election_id=pos.election.election_id).exists():
+            messages.error(request, 'Cannot apply for more than one posts!')
+            return redirect('index')
+        if pos:
+            if pos.election.status == 'Registration Open':
                 try:
 
-                    Candidate.objects.create(position=position, student=student)
+                    Candidate.objects.create(position=pos, student=student)
                 except IntegrityError as e:
                     messages.error(request, 'Already Applied')
                     return redirect('index')
